@@ -1,3 +1,12 @@
+---
+title: KGCBackend
+emoji: 🏢
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
 # KGC Lite — Backend Setup Guide
 
 ## Stack
