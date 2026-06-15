@@ -15,11 +15,12 @@ from database.models import Base
 logger = logging.getLogger(__name__)
 
 # ── ASYNC ENGINE (for FastAPI routes) ────────────────────────────
-is_sqlite = settings.DATABASE_URL.startswith("sqlite")
+db_url = settings.DATABASE_URL or "sqlite+aiosqlite:///kgc_lite.db"
+is_sqlite = db_url.startswith("sqlite")
 connect_args = {"check_same_thread": False} if is_sqlite else {}
 
 async_engine = create_async_engine(
-    settings.DATABASE_URL,
+    db_url,
     echo=settings.DEBUG,
     pool_pre_ping=True,
     **(
@@ -38,9 +39,10 @@ AsyncSessionLocal = async_sessionmaker(
 )
 
 # ── SYNC ENGINE (for Alembic migrations) ─────────────────────────
-is_sync_sqlite = settings.SYNC_DATABASE_URL.startswith("sqlite")
+sync_db_url = settings.SYNC_DATABASE_URL or "sqlite:///kgc_lite.db"
+is_sync_sqlite = sync_db_url.startswith("sqlite")
 sync_engine = create_engine(
-    settings.SYNC_DATABASE_URL,
+    sync_db_url,
     echo=False,
     pool_pre_ping=True,
     connect_args={"check_same_thread": False} if is_sync_sqlite else {},
