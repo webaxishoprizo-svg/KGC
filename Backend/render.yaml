@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: kgc-lite-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DEBUG
+        value: false
+      - key: SMS_PROVIDER
+        value: console
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: EMBEDDING_MODEL
+        value: all-MiniLM-L6-v2
+      - key: SIMILARITY_THRESHOLD
+        value: "0.82"
+      - key: MAX_COMPLAINTS_PER_DAY
+        value: "5"
+      - key: GEMINI_API_KEY
+        sync: false        # set manually in Render dashboard
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./kgc_lite.db
+      - key: SYNC_DATABASE_URL
+        value: sqlite:///./kgc_lite.db
